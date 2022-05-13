@@ -6,13 +6,13 @@ import path from "path";
 class PostController {
     async create(req, res, next) {
         try {
-            let { title, content } = req.body
+            let { title, content, author } = req.body
             const { img } = req.files
             let fileName = `${uuidv4()}.jpg`
             const filepath = path.resolve('static', fileName)
             await img.mv(filepath)
 
-            const post = await Post.create({title, content, img: fileName})
+            const post = await Post.create({title, content, author, img: fileName})
             return res.json(post)
         } catch (e) {
             next(ApiError.badRequest(e.message))

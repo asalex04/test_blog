@@ -16,9 +16,6 @@ const Post = sequelize.define('post', {
     img: {type: DataTypes.STRING},
 })
 
-User.hasMany(Post, {
-    foreignKey: 'userId'
-})
-Post.belongsTo(User)
+User.hasMany(Post)
 
 export {User, Post}

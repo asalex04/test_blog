@@ -24,6 +24,8 @@ class UserController {
         const hashPassword = await bcrypt.hash(password, 8)
         const user = await User.create({email, name, password: hashPassword})
         const token = generateJwt(user.id, user.email, user.name)
+        const decoded = jwt.verify(token, process.env.SECRET_KEY)
+        localStorage.setItem('user', decoded)
         return res.json({token})
     }
 
@@ -38,7 +40,6 @@ class UserController {
             return next(ApiError.internal(`Wrong password`))
         }
         const token = generateJwt(user.id, user.email, user.name)
-        console.log(token)
         return res.json({token})
     }
 
