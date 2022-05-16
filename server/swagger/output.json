@@ -1,0 +1,320 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Test API",
+    "description": "My test API",
+    "version": "1.0.0"
+  },
+  "host": "localhost:7000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/user/registration": {
+      "post": {
+        "description": "Registration new user",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                },
+                "name": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/user/login": {
+      "post": {
+        "description": "User authorization",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/user/auth": {
+      "get": {
+        "description": "User authorization verification",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/post/": {
+      "post": {
+        "description": "Create new post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "text",
+            "in": "body",
+            "description": "New post text",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Text"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Array of new posts",
+            "schema": {
+              "$ref": "#/definitions/Posts"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "description": "Get all posts",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of all posts",
+            "schema": {
+              "$ref": "#/definitions/Posts"
+            }
+          }
+        }
+      }
+    },
+    "/api/post/{id}": {
+      "get": {
+        "description": "Get post by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Existing post ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post with provided ID",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Remove existing post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Existing post ID"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Array of new posts or empty array",
+            "schema": {
+              "$ref": "#/definitions/Posts"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "put": {
+        "description": "Update existing post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Existing post ID"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "any"
+                },
+                "content": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Array of new posts",
+            "schema": {
+              "$ref": "#/definitions/Posts"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Post": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "1"
+        },
+        "title": {
+          "type": "string",
+          "example": "post1"
+        },
+        "content": {
+          "type": "string",
+          "example": "test"
+        },
+        "author": {
+          "type": "string",
+          "example": "username"
+        },
+        "img": {
+          "type": "string",
+          "example": "test.jpg"
+        }
+      }
+    },
+    "Posts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Post"
+      }
+    },
+    "Text": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "post1"
+        },
+        "content": {
+          "type": "string",
+          "example": "test"
+        },
+        "img": {
+          "type": "string",
+          "example": "test.jpg"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "1"
+        },
+        "email": {
+          "type": "string",
+          "example": "email"
+        },
+        "name": {
+          "type": "string",
+          "example": "username"
+        },
+        "password": {
+          "type": "string",
+          "example": "password"
+        }
+      }
+    }
+  }
+}
