@@ -31,12 +31,15 @@ const PostPage = () => {
         setFile(e.target.files[0])
     }
 
+    const removePost = (id: string) => {
+        deletePost(id).then(data => handleClose())
+    }
+
     const addPost = () => {
         const formData = new FormData()
         formData.append('title', title)
         formData.append('content', content)
         formData.append('img', file)
-        console.log(formData)
         updatePost(id, formData).then(data => handleClose())
     }
 
@@ -76,7 +79,7 @@ const PostPage = () => {
                     <Button variant="primary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="danger" onClick={() => deletePost(id)}>
+                    <Button variant="danger" onClick={() => removePost(id)}>
                         Delete
                     </Button>
                     <Button variant="primary" onClick={addPost}>

@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import {createPost} from "../api/postApi";
-import {useAppSelector} from "../hooks/redux";
 import jwtDecode from "jwt-decode";
 
 const AddPost = () => {
@@ -9,8 +8,6 @@ const AddPost = () => {
     const [file, setFile] = useState('')
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
-
-    const {user} = useAppSelector(state => state.user)
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -22,13 +19,14 @@ const AddPost = () => {
     // @ts-ignore
     const name = jwtDecode(localStorage.getItem('token')).name
 
-    const addPost = () => {
+    const addNewPost = async () => {
         const formData = new FormData()
         formData.append('title', title)
         formData.append('content', content)
         formData.append('img', file)
         formData.append('author', name)
-        createPost(formData).then(data => handleClose())
+        await createPost(formData)
+        handleClose()
     }
 
     return (
@@ -73,7 +71,7 @@ const AddPost = () => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={addPost}>
+                    <Button variant="primary" onClick={addNewPost}>
                         Add post
                     </Button>
                 </Modal.Footer>
